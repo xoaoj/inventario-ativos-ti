@@ -1,0 +1,15 @@
+# Bytecode gerado pelo interpretador, recriado a cada execução
+__pycache__/
+*.pyc
+
+# Ambientes virtuais
+.venv/
+venv/
+
+# Configuração de editor, específica da máquina
+.vscode/
+.idea/
+
+# Sistema operacional
+Thumbs.db
+desktop.ini
