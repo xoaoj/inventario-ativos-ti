@@ -1,5 +1,7 @@
+from acoes_ativo import atualizar_ativo, cadastrar_ativo, consultar_ativo, excluir_ativo
+from acoes_vulnerabilidade import cadastrar_vulnerabilidade, ver_vulnerabilidades
 from entrada import ler_int
-from modelos import Inventario
+from persistencia import carregar, salvar
 
 OPCOES = {
     1: "cadastrar",
@@ -18,10 +20,14 @@ def mostrar_menu() -> None:
         print(f"  {codigo} - {texto}")
 
 
-def em_desenvolvimento(_inventario: Inventario) -> None:
-    print("  (WIP - ainda to fazendo)")
-
-ACOES = {codigo: em_desenvolvimento for codigo in OPCOES if codigo != 0}
+ACOES = {
+    1: cadastrar_ativo,
+    2: consultar_ativo,
+    3: atualizar_ativo,
+    4: excluir_ativo,
+    5: cadastrar_vulnerabilidade,
+    6: ver_vulnerabilidades,
+}
 
 def main() -> None:
     inventario = carregar()
@@ -38,6 +44,7 @@ def main() -> None:
             continue
         try:
             acao(inventario)
+            salvar(inventario)
         except (ValueError, KeyError) as erro:
             print(f"  ! Erro: {erro}")
 

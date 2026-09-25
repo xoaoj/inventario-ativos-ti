@@ -18,6 +18,34 @@ class TipoAtivo(Enum):
         return self.name.replace("_", " ").capitalize()
 
 
+class Severidade(Enum):
+    BAIXA = "baixa"
+    MEDIA = "media"
+    ALTA = "alta"
+    CRITICA = "critica"
+
+    def rotulo(self) -> str:
+        return self.name.capitalize()
+
+
+class StatusVulnerabilidade(Enum):
+    ABERTA = "aberta"
+    EM_TRATAMENTO = "em tratamento"
+    CORRIGIDA = "corrigida"
+    ACEITA_COMO_RISCO = "aceita como risco"
+
+    def rotulo(self) -> str:
+        return self.value.capitalize()
+
+
+@dataclass
+class Vulnerabilidade:
+    descricao: str
+    categoria: str
+    severidade: Severidade
+    status: StatusVulnerabilidade
+
+
 @dataclass
 class Ativo:
     id: int
@@ -25,7 +53,8 @@ class Ativo:
     responsavel: str
     setor: str
     tipo: TipoAtivo
-    vulnerabilidades: list = field(default_factory=list)
+    descricao: str = ""
+    vulnerabilidades: list[Vulnerabilidade] = field(default_factory=list)
 
 
 class Inventario:
