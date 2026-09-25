@@ -61,6 +61,9 @@ def atualizar_ativo(inventario: Inventario) -> None:
         print("  ! ativo nao encontrado")
         return
 
+    # o nome nao entra aqui de proposito: ele e a chave do indice por_nome
+    # em Inventario, e o requisito de atualizacao (R5) nao pede pra mudar o
+    # nome/hostname, so responsavel, setor, tipo ou descricao.
     print("  deixe em branco pra manter o valor atual")
     ativo.responsavel = ler_opcional(f"  responsavel [{ativo.responsavel}]: ", ativo.responsavel)
     ativo.setor = ler_opcional(f"  setor [{ativo.setor}]: ", ativo.setor)
