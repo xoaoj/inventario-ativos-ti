@@ -1,4 +1,4 @@
-from modelos import TipoAtivo
+from modelos import Severidade, StatusVulnerabilidade, TipoAtivo
 
 
 def ler_nao_vazio(mensagem: str) -> str:
@@ -7,6 +7,11 @@ def ler_nao_vazio(mensagem: str) -> str:
         if texto:
             return texto
         print("n pode deixar vazio")
+
+
+def ler_opcional(mensagem: str, atual: str) -> str:
+    texto = input(mensagem).strip()
+    return texto if texto else atual
 
 
 def ler_int(mensagem: str, minimo: int | None = None, maximo: int | None = None) -> int:
@@ -33,3 +38,21 @@ def ler_tipo_ativo() -> TipoAtivo:
             return TipoAtivo.por_codigo(codigo)
         except ValueError:
             print("cod de tipo nao existe")
+
+
+def ler_severidade() -> Severidade:
+    opcoes = list(Severidade)
+    print("  severidade")
+    for i, sev in enumerate(opcoes, start=1):
+        print(f"    {i} - {sev.rotulo()}")
+    escolha = ler_int("  escolha: ", minimo=1, maximo=len(opcoes))
+    return opcoes[escolha - 1]
+
+
+def ler_status_vulnerabilidade() -> StatusVulnerabilidade:
+    opcoes = list(StatusVulnerabilidade)
+    print("  status de tratamento")
+    for i, status in enumerate(opcoes, start=1):
+        print(f"    {i} - {status.rotulo()}")
+    escolha = ler_int("  escolha: ", minimo=1, maximo=len(opcoes))
+    return opcoes[escolha - 1]

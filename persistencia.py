@@ -1,13 +1,13 @@
 import csv
 from pathlib import Path
 
-from modelos import Ativo, Inventario, TipoAtivo
+from modelos import Ativo, Inventario, Severidade, StatusVulnerabilidade, TipoAtivo, Vulnerabilidade
 
 PASTA_DADOS = Path("dados")
 ARQ_ATIVOS = PASTA_DADOS / "ativos.txt"
 ARQ_VULNS = PASTA_DADOS / "vulnerabilidades.txt"
 
-CAMPOS_ATIVO = ["id", "nome", "responsavel", "setor", "tipo"]
+CAMPOS_ATIVO = ["id", "nome", "responsavel", "setor", "tipo", "descricao"]
 CAMPOS_VULN = ["ativo_id", "descricao", "categoria", "severidade", "status"]
 
 
@@ -28,6 +28,7 @@ def salvar(inventario: Inventario) -> None:
                 "responsavel": ativo.responsavel,
                 "setor": ativo.setor,
                 "tipo": ativo.tipo.value,
+                "descricao": ativo.descricao,
             })
 
     with _abrir_escrita(ARQ_VULNS) as arq:
@@ -35,7 +36,13 @@ def salvar(inventario: Inventario) -> None:
         escritor.writeheader()
         for ativo in inventario.ativos.values():
             for vuln in ativo.vulnerabilidades:
-                escritor.writerow({"ativo_id": ativo.id, **vuln})
+                escritor.writerow({
+                    "ativo_id": ativo.id,
+                    "descricao": vuln.descricao,
+                    "categoria": vuln.categoria,
+                    "severidade": vuln.severidade.value,
+                    "status": vuln.status.value,
+                })
 
 
 def carregar() -> Inventario:
@@ -51,6 +58,7 @@ def carregar() -> Inventario:
                         responsavel=linha["responsavel"],
                         setor=linha["setor"],
                         tipo=TipoAtivo.por_codigo(int(linha["tipo"])),
+                        descricao=linha.get("descricao") or "",
                     )
                     inventario.adicionar(ativo)
                 except (ValueError, KeyError) as erro:
@@ -66,6 +74,15 @@ def carregar() -> Inventario:
                 if ativo is None:
                     print(f"  ! Vulnerabilidade sem ativo correspondente ignorada: {linha}")
                     continue
-                ativo.vulnerabilidades.append({campo: linha[campo] for campo in CAMPOS_VULN[1:]})
+                try:
+                    vuln = Vulnerabilidade(
+                        descricao=linha["descricao"],
+                        categoria=linha["categoria"],
+                        severidade=Severidade(linha["severidade"]),
+                        status=StatusVulnerabilidade(linha["status"]),
+                    )
+                    ativo.vulnerabilidades.append(vuln)
+                except (ValueError, KeyError) as erro:
+                    print(f"  ! Linha ignorada em {ARQ_VULNS.name}: {linha} ({erro})")
 
     return inventario
