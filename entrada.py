@@ -41,6 +41,8 @@ def ler_tipo_ativo() -> TipoAtivo:
 
 
 def ler_severidade() -> Severidade:
+    # severidade nao precisa de codigo inteiro proprio (isso e' exigido so
+    # pra tipo de ativo, no R2); aqui a posicao na lista basta pra escolher.
     opcoes = list(Severidade)
     print("  severidade")
     for i, sev in enumerate(opcoes, start=1):
