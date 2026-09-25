@@ -24,7 +24,8 @@ def em_desenvolvimento(_inventario: Inventario) -> None:
 ACOES = {codigo: em_desenvolvimento for codigo in OPCOES if codigo != 0}
 
 def main() -> None:
-    inventario = Inventario()
+    inventario = carregar()
+    print(f"{len(inventario.ativos)} ativo(s) carregado(s) da base.")
     while True:
         mostrar_menu()
         opcao = ler_int("escolha a opção: ", minimo=0, maximo=max(OPCOES))
