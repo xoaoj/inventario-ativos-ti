@@ -1,6 +1,6 @@
 from acoes_ativo import buscar_ativo_interativo
-from entrada import ler_nao_vazio, ler_severidade, ler_status_vulnerabilidade
-from modelos import Inventario, Vulnerabilidade
+from entrada import ler_vulnerabilidade
+from modelos import Inventario
 
 
 def cadastrar_vulnerabilidade(inventario: Inventario) -> None:
@@ -10,12 +10,7 @@ def cadastrar_vulnerabilidade(inventario: Inventario) -> None:
         print("  ! ativo nao encontrado")
         return
 
-    descricao = ler_nao_vazio("  descricao da vulnerabilidade: ")
-    categoria = ler_nao_vazio("  categoria (ex.: falha de configuracao, senha fraca): ")
-    severidade = ler_severidade()
-    status = ler_status_vulnerabilidade()
-
-    vuln = Vulnerabilidade(descricao=descricao, categoria=categoria, severidade=severidade, status=status)
+    vuln = ler_vulnerabilidade()
     ativo.vulnerabilidades.append(vuln)
     print(f"  vulnerabilidade cadastrada no ativo '{ativo.nome}'.")
 

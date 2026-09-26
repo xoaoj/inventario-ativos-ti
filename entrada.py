@@ -1,4 +1,4 @@
-from modelos import Severidade, StatusVulnerabilidade, TipoAtivo
+from modelos import Severidade, StatusVulnerabilidade, TipoAtivo, Vulnerabilidade
 
 
 def ler_nao_vazio(mensagem: str) -> str:
@@ -58,3 +58,11 @@ def ler_status_vulnerabilidade() -> StatusVulnerabilidade:
         print(f"    {i} - {status.rotulo()}")
     escolha = ler_int("  escolha: ", minimo=1, maximo=len(opcoes))
     return opcoes[escolha - 1]
+
+
+def ler_vulnerabilidade() -> Vulnerabilidade:
+    descricao = ler_nao_vazio("  descricao da vulnerabilidade: ")
+    categoria = ler_nao_vazio("  categoria (ex.: falha de configuracao, senha fraca): ")
+    severidade = ler_severidade()
+    status = ler_status_vulnerabilidade()
+    return Vulnerabilidade(descricao=descricao, categoria=categoria, severidade=severidade, status=status)
