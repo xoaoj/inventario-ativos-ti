@@ -1,5 +1,21 @@
-from entrada import ler_int, ler_nao_vazio, ler_opcional, ler_tipo_ativo
-from modelos import Ativo, Inventario
+from entrada import ler_int, ler_nao_vazio, ler_opcional, ler_tipo_ativo, ler_vulnerabilidade
+from modelos import Ativo, Inventario, Vulnerabilidade
+
+
+def _ler_vulnerabilidades_iniciais() -> list[Vulnerabilidade]:
+    """Pergunta se o usuario quer cadastrar vulnerabilidades ja no cadastro do
+    ativo (R3), repetindo ate ele dizer que nao quer mais adicionar."""
+    vulnerabilidades: list[Vulnerabilidade] = []
+    quer_cadastrar = input("cadastrar vulnerabilidades iniciais agora? (s/n): ").strip().lower()
+    if quer_cadastrar != "s":
+        return vulnerabilidades
+
+    while True:
+        vulnerabilidades.append(ler_vulnerabilidade())
+        continuar = input("  cadastrar outra vulnerabilidade? (s/n): ").strip().lower()
+        if continuar != "s":
+            break
+    return vulnerabilidades
 
 
 def cadastrar_ativo(inventario: Inventario) -> None:
@@ -10,6 +26,7 @@ def cadastrar_ativo(inventario: Inventario) -> None:
     setor = ler_nao_vazio("setor/localizacao: ")
     tipo = ler_tipo_ativo()
     descricao = input("descricao (opcional): ").strip()
+    vulnerabilidades = _ler_vulnerabilidades_iniciais()
 
     ativo = Ativo(
         id=id_,
@@ -18,9 +35,10 @@ def cadastrar_ativo(inventario: Inventario) -> None:
         setor=setor,
         tipo=tipo,
         descricao=descricao,
+        vulnerabilidades=vulnerabilidades,
     )
     inventario.adicionar(ativo)  # lanca ValueError se o id ja existir
-    print(f"  ativo '{nome}' cadastrado com id {id_}.")
+    print(f"  ativo '{nome}' cadastrado com id {id_} ({len(vulnerabilidades)} vulnerabilidade(s) inicial(is)).")
 
 
 def buscar_ativo_interativo(inventario: Inventario) -> Ativo | None:
