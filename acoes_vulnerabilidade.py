@@ -4,31 +4,31 @@ from modelos import Inventario
 
 
 def cadastrar_vulnerabilidade(inventario: Inventario) -> None:
-    print("\ncadastrar vulnerabilidade")
+    print("\n▸ Cadastrar vulnerabilidade")
     ativo = buscar_ativo_interativo(inventario)
     if ativo is None:
-        print("  ! ativo nao encontrado")
+        print("  ✗ Ativo não encontrado.")
         return
 
     vuln = ler_vulnerabilidade()
     ativo.vulnerabilidades.append(vuln)
-    print(f"  vulnerabilidade cadastrada no ativo '{ativo.nome}'.")
+    print(f"  ✓ Vulnerabilidade cadastrada no ativo '{ativo.nome}'.")
 
 
 def ver_vulnerabilidades(inventario: Inventario) -> None:
-    print("\nver vulnerabilidades")
+    print("\n▸ Ver vulnerabilidades")
     ativo = buscar_ativo_interativo(inventario)
     if ativo is None:
-        print("  ! ativo nao encontrado")
+        print("  ✗ Ativo não encontrado.")
         return
 
     if not ativo.vulnerabilidades:
-        print(f"  o ativo '{ativo.nome}' esta sem vulnerabilidades registradas.")
+        print(f"  ℹ O ativo '{ativo.nome}' está sem vulnerabilidades registradas.")
         return
 
-    print(f"  vulnerabilidades do ativo '{ativo.nome}':")
+    print(f"  Vulnerabilidades do ativo '{ativo.nome}':")
     for indice, vuln in enumerate(ativo.vulnerabilidades, start=1):
         print(f"    {indice}. {vuln.descricao}")
-        print(f"       categoria..: {vuln.categoria}")
-        print(f"       severidade.: {vuln.severidade.rotulo()}")
-        print(f"       status.....: {vuln.status.rotulo()}")
+        print(f"       Categoria..: {vuln.categoria}")
+        print(f"       Severidade.: {vuln.severidade.rotulo()}")
+        print(f"       Status.....: {vuln.status.rotulo()}")

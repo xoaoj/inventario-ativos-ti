@@ -62,7 +62,7 @@ def carregar() -> Inventario:
                     )
                     inventario.adicionar(ativo)
                 except (ValueError, KeyError) as erro:
-                    print(f"  ! Linha ignorada em {ARQ_ATIVOS.name}: {linha} ({erro})")
+                    print(f"  ✗ Linha ignorada em {ARQ_ATIVOS.name}: {linha} ({erro})")
 
     if ARQ_VULNS.exists():
         with open(ARQ_VULNS, newline="", encoding="utf-8") as arq:
@@ -72,7 +72,7 @@ def carregar() -> Inventario:
                 except ValueError:
                     ativo = None
                 if ativo is None:
-                    print(f"  ! Vulnerabilidade sem ativo correspondente ignorada: {linha}")
+                    print(f"  ✗ Vulnerabilidade sem ativo correspondente ignorada: {linha}")
                     continue
                 try:
                     vuln = Vulnerabilidade(
@@ -83,6 +83,6 @@ def carregar() -> Inventario:
                     )
                     ativo.vulnerabilidades.append(vuln)
                 except (ValueError, KeyError) as erro:
-                    print(f"  ! Linha ignorada em {ARQ_VULNS.name}: {linha} ({erro})")
+                    print(f"  ✗ Linha ignorada em {ARQ_VULNS.name}: {linha} ({erro})")
 
     return inventario
